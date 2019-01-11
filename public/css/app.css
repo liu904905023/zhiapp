@@ -8980,18 +8980,18 @@ button.close {
   }
 }
 
-.panel-body .content img {
-  width: 100%;
+.panel-body.content img {
+  width: 40px;
 }
 
 a.topic {
-  background-color: #eff6fa;
+  background: #eff6fa;
   padding: 1px 10px 0;
   border-radius: 30px;
   text-decoration: none;
   margin: 0 5px 5px 0;
   display: inline-block;
-  white-space: normal;
+  white-space: nowrap;
   cursor: pointer;
 }
 
@@ -9023,5 +9023,45 @@ a.topic:hover {
 .delete-button {
   color: #3097D1;
   text-decoration: none;
+}
+
+.question-follow {
+  text-align: center;
+}
+
+.user-statics,
+.user-actions {
+  margin-top: 20px;
+}
+
+.user-statics {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.statics-item {
+  padding: 2px 20px;
+}
+
+.messages-list {
+  margin-top: 80px;
+}
+
+.media.unread {
+  background: #fff9ca;
+}
+
+.notifications {
+  position: relative;
+  padding: 8px 15px 8px 25px;
+  color: #666;
+  border: none;
+  border-top: 1px dotted #eee;
+  background: transparent;
+}
+
+.notifications.unread {
+  background: #fff9ea;
 }
 

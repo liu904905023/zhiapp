@@ -7,9 +7,18 @@
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="api-token" content="{{Auth::check()? 'Bearer '.Auth::user()->api_token :'Bearer ' }}">
 
     <title>{{ config('app.name', 'Laravel') }}</title>
+    <script>
 
+        @if(Auth::check())
+            window.Zhihu = {
+            name:"{{Auth::user()->name}}",
+            avatar:"{{Auth::user()->avatar}}"
+        };
+        @endif
+    </script>
     <!-- Styles -->
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
 
@@ -54,12 +63,13 @@
 
                                 <ul class="dropdown-menu">
                                     <li>
+                                        <a href="/notifications">站内信</a>
                                         <a href="{{ route('logout') }}"
                                             onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                             Logout
                                         </a>
-
+                                
                                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                             {{ csrf_field() }}
                                         </form>
@@ -77,7 +87,6 @@
         @yield('content')
     </div>
 
-    <!-- Scripts -->
     <script src="{{ mix('js/app.js') }}"></script>
     @yield('js')
     <script>

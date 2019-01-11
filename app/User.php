@@ -24,7 +24,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password','avatar','confirmation_token','is_active','settings'
+        'name', 'email', 'password','avatar','confirmation_token','is_active','settings','api_token'
     ];
 
     /**
@@ -40,4 +40,41 @@ class User extends Authenticatable
         return $this->id == $model->user_id;
     }
 
+    public function follows() {
+        return $this->belongsToMany(Question::class,'user_question')->withTimestamps();
+    }
+
+    public function followers() {
+        return $this->belongsToMany(self::class, 'followers', 'follower_id', 'followed_id')->withTimestamps();
+    }
+    public function followersUser() {
+        return $this->belongsToMany(self::class, 'followers', 'followed_id', 'follower_id')->withTimestamps();
+    }
+    public function followThis($question) {
+        return $this->follows()->toggle($question);
+    }
+
+    public function followed($question) {
+        return $this->follows()->where('question_id', $question)->count();
+    }
+
+    public function followThisUser($user) {
+        return $this->followers()->toggle($user);
+    }
+
+    public function votes() {
+        return $this->belongsToMany(Answer::class, 'votes')->withTimestamps();
+    }
+
+    public function voteFor($answer) {
+        return $this->votes()->toggle($answer);
+    }
+
+    public function hasVoteFor($answer) {
+        return $this->votes()->where('answer_id', $answer)->count();
+    }
+
+    public function messages() {
+        return $this->hasMany(Message::class,'to_user_id');
+    }
 }

@@ -20,41 +20,52 @@
                     <div class="actions">
                         @if(Auth::check()&&Auth::user()->owns($question))
                             <span class="edit">
-                                <a href="/questions/{{$question->id}}/edit">edit</a>
+                                <a href="/questions/{{$question->id}}/edit">编辑</a>
                             </span>
                             <form action="/questions/{{$question->id}}" method="post" class="delete-form">
                                 {!! method_field('delete') !!}
                                 {!! csrf_field() !!}
-                                <button class="button is-naked delete-button">delete</button>
+                                <button class="button is-naked delete-button">删除</button>
                             </form>
                         @endif
+                        <comments-form
+                                type="question"
+                                model ="{{$question->id}}"
+                                count="{{$question->comments()->count()}}">
+
+                        </comments-form>
                     </div>
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="panel panel-default">
                     <div class="panel-heading text-center">
-                        <span>{{$question->followers_count}} followers</span>
+                        <h4>{{$question->followers_count}}</h4>
+                        <span> 关注</span>
                     </div>
                     <div class="panel-body">
-                        <a href="/question/{{$question->id}}" class="btn btn-default">
-                            follow answer
-                        </a>
-                        <a href="" class="btn btn-primary">write</a>
+                        {{--<a href="/questions/{{$question->id}}/follow" class="btn btn-default {{Auth::user()->followed($question->id)>0?'btn-success':''}}">--}}
+                            {{--{{Auth::user()->followed($question->id)>0?'unfollow':'followed'}}--}}
+                        {{--</a>--}}
+                        <question-follow-button question="{{$question->id}}"></question-follow-button>
+                        <a href="#editor" class="btn btn-primary">撰写</a>
                     </div>
                 </div>
+
             </div>
             <div class="col-md-8 col-md-offset-1">
                 <div class="panel panel-default">
                     <div class="panel-heading text-center">
-                        {{$question->answers_count}} answers
+                        {{$question->answers_count}} 回答
                     </div>
 
                     <div class="panel-body content">
                         @foreach($question->answers as $answer)
                             <div class="media">
-                                <a class="pull-left" href="">
-                                    <img src="{{$answer->user->avatar}}" class="media-object" width="46" alt="{{$answer->user->name}}">
+                                <a class="pull-left" href="#">
+                                    <user-vote-button answer="{{$answer->id}}" count = "{{$answer->votes_count}}"></user-vote-button>
+
+                                    {{--<img src="{{$answer->user->avatar}}" class="media-object" width="46" alt="{{$answer->user->name}}">--}}
                                 </a>
                                 <div class="media-body">
                                     <h4 class="media-heading">
@@ -62,9 +73,14 @@
                                             {!! $answer->user->name !!}
                                         </a>
                                     </h4>
-                                    {!! $question->title !!}
+                                    <span>{!! $answer->body !!}</span>
                                 </div>
+                                <comments-form
+                                        type="answer"
+                                        model ="{{$answer->id}}"
+                                        count="{{$answer->comments()->count()}}">
 
+                                </comments-form>
                             </div>
                         @endforeach
                         @if(Auth::check())
@@ -82,21 +98,60 @@
                                 @endif
                             </div>
 
-                            <button class="btn btn-success pull-right" type="submit">submit</button>
+                            <button class="btn btn-success pull-right" type="submit">发送</button>
                         </form>
                             @else
-                                <a href="/login" class="btn btn-success btn-block">login</a>
+                                <a href="/login" class="btn btn-success btn-block">登录</a>
                         @endif
                     </div>
 
                 </div>
 
                 </div>
+            <div class="col-md-3">
+                <div class="panel panel-default">
+                    <div class="panel-heading text-center">
+                        <h4>关于作者</h4>
+                    </div>
+                    <div class="panel-body">
+                       <div class="media">
+                           <div class="media-left">
+                               <a href="#">
+                                   <img width="36" src="{{$question->user->avatar }}" alt="{{$question->user->name}}">
+                               </a>
+                           </div>
+                           <div class="media-body">
+                               <h4 class="media-heading">
+                                   <a href="">
+                                       {{$question->user->name}}
+                                   </a>
+                               </h4>
+                           </div>
+                           <div class="user-statics" >
+                               <div class="statics-item text-center">
+                                   <div class="statics-text">问题</div>
+                                   <div class="statics-count">{{ $question->user->questions_count }}</div>
+                               </div>
+                               <div class="statics-item text-center">
+                                   <div class="statics-text">回答</div>
+                                   <div class="statics-count">{{ $question->user->answers_count }}</div>
+                               </div>
+                               <div class="statics-item text-center">
+                                   <div class="statics-text">关注者</div>
+                                   <div class="statics-count">{{ $question->user->followers_count }}</div>
+                               </div>
+                           </div>
+                       </div>
+                        <user-follow-button user="{{$question->user->id}}"></user-follow-button>
+                        {{--<a href="#editor" class="btn btn-primary">发送私信</a>--}}
+                        <send-message user="{{$question->user->id}}"></send-message>
+                    </div>
+                </div>
 
+            </div>
             </div>
         </div>
 
-    </div>
 
 @section('js')
 

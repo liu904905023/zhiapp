@@ -30,10 +30,13 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
  */
 
 let token = document.head.querySelector('meta[name="csrf-token"]');
+let api_token = document.head.querySelector('meta[name="api-token"]');
+window.axios.defaults.headers.common['Authorization'] = api_token.content;
 
 if (token) {
     window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
-} else {
+} else if(api_token){
+}else {
     console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
 }
 

@@ -11,5 +11,6 @@ class Follow extends Model
         'user_id',
         'question_id'
     ];
+    protected $persdf;
 
 }

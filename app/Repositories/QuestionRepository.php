@@ -48,4 +48,9 @@ class QuestionRepository {
         })->toArray();
 
     }
+
+    public function getQuestionComment($id) {
+        $question = Question::with('comments', 'comments.user')->where('id', $id)->first();
+        return $question->comments;
+    }
 }

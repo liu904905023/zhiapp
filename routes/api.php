@@ -1,7 +1,4 @@
 <?php
-
-use Illuminate\Http\Request;
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -13,17 +10,26 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
-Route::middleware('api')->post('/user', function () {
-    return 123;
+
+Route::middleware('auth:api')->post('/question/follower', 'QuestionFollowController@follower');
+
+
+Route::middleware('auth:api')->post('/question/follow','QuestionFollowController@followThisQuestion');
+
+
+Route::middleware('api')->get('/topics','TopicsController@index');
+
+Route::middleware('auth:api')->post('/user/followers','FollowersController@index');
+Route::middleware('auth:api')->post('/user/follow','FollowersController@follow');
+
+Route::middleware('auth:api')->get('/answer/{id}/votes/user','VotesController@index');
+Route::middleware('auth:api')->post('/answer/vote','VotesController@vote');
+
+Route::middleware('auth:api')->post('/message/store', 'MessagesController@send');
+Route::group(['prefix' => '/v1', 'namespace' => 'Api\V1', 'as' => 'api.', 'middleware' => ['api']], function () {
+    Route::get('/answer/{id}/comments','CommentsController@answer');
+    Route::get('/question/{id}/comments','CommentsController@question');
 });
 
-Route::middleware('api')->get('/topics', function (Request $request) {
 
-    $topic = \App\Topic::select('id', 'name')->where('name', 'like','%'. $request->query('q').'%')->get();
-//    $topic = DB::select("select * from topics where locate ('".$request->query('q')."',name)");
-
-    return $topic;
-});
+Route::middleware('auth:api')->post('/comments/store', 'CommentsController@store');
