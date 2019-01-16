@@ -67,3 +67,6 @@ a.topic:hover {
 .notifications.unread {
     background: #fff9ea;
 }
+.messages-list{
+    margin-top: 30px;
+}

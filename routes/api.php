@@ -29,6 +29,7 @@ Route::middleware('auth:api')->post('/message/store', 'MessagesController@send')
 Route::group(['prefix' => '/v1', 'namespace' => 'Api\V1', 'as' => 'api.', 'middleware' => ['api']], function () {
     Route::get('/answer/{id}/comments','CommentsController@answer');
     Route::get('/question/{id}/comments','CommentsController@question');
+    Route::post('/comments/store','CommentsController@store');
 });
 
 

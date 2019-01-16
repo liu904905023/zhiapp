@@ -19,13 +19,14 @@ class MessagesController extends Controller
 
     public function send() {
 
-        $from_user_id = \Auth::guard('api')->user()->id;
+        $from_user_id = user('api')->id;
         $to_user_id = request('user');
         $body = request('body');
         $message = $this->message->create([
             'from_user_id' => $from_user_id,
             'to_user_id' => $to_user_id,
             'body' => $body,
+            'dialog_id'=>$from_user_id.$to_user_id
         ]);
         if ($message) {
             return response()->json([
