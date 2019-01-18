@@ -25,6 +25,11 @@
 </head>
 <body>
     <div id="app">
+        @member
+        is logined
+        @else
+            no one is here
+            @endmember
         <nav class="navbar navbar-default navbar-static-top">
             <div class="container">
                 <div class="navbar-header">

@@ -42,3 +42,10 @@ Route::post('/user/avatar','UserController@changeAvatar');
 Route::get('inbox', 'InBoxController@index');
 Route::get('inbox/{diaglog}', 'InBoxController@show');
 Route::post('inbox/{diaglog}/store', 'InBoxController@store');
+
+Route::get('password','PasswordController@index');
+Route::post('/password/update','PasswordController@update')->name('password');
+
+
+Route::get('setting','SettingController@index');
+Route::post('setting','SettingController@store')->name('setting');

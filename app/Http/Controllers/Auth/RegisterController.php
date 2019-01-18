@@ -72,8 +72,9 @@ class RegisterController extends Controller
             'avatar' => '/images/avatar/default.png',
             'confirmation_token' => str_random(40),
             'password' => bcrypt($data['password']),
-            'settings'=>'',
+            'settings'=>'{"city":"","bio":""}',
             'api_token' => str_random(60),
+
 
         ]);
         (new UserMailer())->registerEmail($user);
